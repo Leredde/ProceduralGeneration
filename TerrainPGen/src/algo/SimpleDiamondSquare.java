@@ -1,20 +1,15 @@
 package algo;
 
-import java.io.IOException;
 import java.util.Random;
 
-public class Algo2
+public class SimpleDiamondSquare extends AlgoAdapter
 {
-    private int max;
-    private long seed;
-    
-    public Algo2(int maxValue, long randSeed)
+    public SimpleDiamondSquare(int maxValue, long randSeed)
     {
-	max = maxValue;
-	seed = randSeed;
+	super(maxValue, randSeed);
     }
 
-    public Integer[][] run(int size) throws IOException
+    public Integer[][] run(int size)
     {
         int mapSize = size + 1;
         int stride = size;
@@ -64,8 +59,8 @@ public class Algo2
             {
                 for (int j = 0; j < (mapSize - 1) / stride; j++)
                 {
-                    diamond(map, rand, i * stride, j * stride, stride, range);
                     square(map, rand, i * stride, j * stride, stride, range);
+                    diamond(map, rand, i * stride, j * stride, stride, range);
                 }
             }
             if (range > 2)
@@ -78,9 +73,9 @@ public class Algo2
         return map;
     }
 
-    private static void diamond(Integer[][] map, Random r, int startX, int startY, int stride, int range)
+    private static void square(Integer[][] map, Random r, int startX, int startY, int stride, int range)
     {
-        int granularity = 8;
+        // int granularity = 8;
         double value = 0.0;
         // System.err.println(startX + " " + startY + " " + stride);
         double ratio = r.nextInt(100) / 100.0;
@@ -95,10 +90,8 @@ public class Algo2
         ratio = 1 - ratioCum;
         value += map[startX + stride][startY + stride] * ratio;
 
-        value += r.nextInt(range) / 6.0; // - range / 15;
-        /*
-         * if (value < 0) { value = 0; }
-         */
+        value += r.nextInt(range) / 6.0;
+
         map[startX + stride / 2][startY + stride / 2] = new Double(value).intValue();
     }
 
@@ -107,12 +100,12 @@ public class Algo2
         return pointX == 0 || pointX == mapLengthX - 1 || pointY == 0 || pointY == mapLengthY - 1;
     }
 
-    private static void squarePart(Integer[][] map, int x1, int y1, int x2, int y2, int midX, int midY, Random r,
+    private static void diamondPart(Integer[][] map, int x1, int y1, int x2, int y2, int midX, int midY, Random r,
             int range)
     {
         double divider = 3.0;
         double sDivider = 3.0;
-        int granularity = 8;
+        //int granularity = 8;
 
         // If the pixel to compute is not on the border of the map
         if (!isOnMapBorder(x1, y1, map.length, map[0].length) || !isOnMapBorder(x2, y2, map.length, map[0].length))
@@ -150,13 +143,13 @@ public class Algo2
         map[destX][destY] = new Double(value).intValue();
     }
 
-    private static void square(Integer[][] map, Random r, int startX, int startY, int stride, int range)
+    private static void diamond(Integer[][] map, Random r, int startX, int startY, int stride, int range)
     {
-        squarePart(map, startX, startY, startX, startY + stride, startX + stride / 2, startY + stride / 2, r, range);
-        squarePart(map, startX + stride, startY, startX + stride, startY + stride, startX + stride / 2,
+        diamondPart(map, startX, startY, startX, startY + stride, startX + stride / 2, startY + stride / 2, r, range);
+        diamondPart(map, startX + stride, startY, startX + stride, startY + stride, startX + stride / 2,
                 startY + stride / 2, r, range);
-        squarePart(map, startX, startY, startX + stride, startY, startX + stride / 2, startY + stride / 2, r, range);
-        squarePart(map, startX, startY + stride, startX + stride, startY + stride, startX + stride / 2,
+        diamondPart(map, startX, startY, startX + stride, startY, startX + stride / 2, startY + stride / 2, r, range);
+        diamondPart(map, startX, startY + stride, startX + stride, startY + stride, startX + stride / 2,
                 startY + stride / 2, r, range);
 
     }

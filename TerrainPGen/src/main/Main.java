@@ -1,12 +1,13 @@
 package main;
 import java.io.IOException;
 
-import algo.Algo2;
+import algo.AdvancedDiamondSquare;
+import algo.Algo;
 import graphic.MapViewFrame;
 
 public class Main
 {
-    private static void createAndShowGUI(Algo2 algo, double size, int lod) throws IOException
+    private static void createAndShowGUI(Algo algo, double size, int lod) throws IOException
     {        
         // Create and set up the window.
         final MapViewFrame mvf = new MapViewFrame(algo, size, lod);
@@ -44,9 +45,11 @@ public class Main
         
         try
         {
-            Algo2 algo = new Algo2(max, seed);
+            // Algo algo = new Algo1(max, seed);
+            // Algo algo = new SimpleDiamondSquare(max, seed);
+            Algo algo = new AdvancedDiamondSquare(max, seed);
             createAndShowGUI(algo, size, lod);
-            //Util.writeMap(map, max, "sqrdmd.ppm");
+            // Util.writeMap(map, max, "sqrdmd.ppm");
         } catch (IOException e)
         {
             e.printStackTrace();

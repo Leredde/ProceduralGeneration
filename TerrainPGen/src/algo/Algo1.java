@@ -6,13 +6,15 @@ import java.util.List;
 import util.RandInt255;
 import util.Util;
 
-public class Algo1
+public class Algo1 extends AlgoAdapter
 {
-    private Algo1()
+
+    public Algo1(int maxValue, long randSeed)
     {
+	super(maxValue, randSeed);
     }
 
-    public static Integer[][] run(int size, long seed)
+    public Integer[][] run(int size)
     {
         RandInt255 rand = new RandInt255(seed);
         Integer initMap[][] = { { rand.getNext(), rand.getNext(), rand.getNext() },

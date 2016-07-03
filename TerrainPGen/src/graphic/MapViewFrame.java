@@ -41,7 +41,8 @@ import com.sun.j3d.utils.geometry.GeometryInfo;
 import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-import algo.Algo2;
+import algo.Algo;
+import algo.SimpleDiamondSquare;
 import graphic.listeners.MouseListenerImpl;
 import graphic.listeners.MouseMotionListenerImpl;
 import graphic.listeners.MouseWheelListenerImpl;
@@ -64,7 +65,7 @@ public class MapViewFrame extends JFrame
     private double size;
     // private Scale scale;
 
-    public MapViewFrame(Algo2 algo,  double realSize, int levelOfDetail) throws IOException
+    public MapViewFrame(Algo algo, double realSize, int levelOfDetail) throws IOException
     {
 	size = realSize;
 	lod = levelOfDetail;
@@ -93,19 +94,11 @@ public class MapViewFrame extends JFrame
 		{
 		    int powerOfTwo = (int) source.getValue();
 		    int newLod = 1 << powerOfTwo;
-		    lod = newLod;	
-		    
+		    lod = newLod;
+
 		    int sizePx = (int) (lod * size);
-		    try
-		    {
-			final Integer[][] map = algo.run(sizePx);
-			// TODO : replace the displayed map by the new one
-			replaceMap(map);
-		    }
-		    catch (IOException e1)
-		    {
-			e1.printStackTrace();
-		    }
+		    final Integer[][] map = algo.run(sizePx);
+		    replaceMap(map);
 		}
 	    }
 	});
@@ -118,9 +111,8 @@ public class MapViewFrame extends JFrame
 
 	this.add(panel);
 
-
-        int sizePx = (int)(lod * size);
-        final Integer[][] map = algo.run(sizePx);
+	int sizePx = (int) (lod * size);
+	final Integer[][] map = algo.run(sizePx);
 	initUniverse(map);
     }
 
@@ -215,7 +207,8 @@ public class MapViewFrame extends JFrame
 		nbVertexPerStrip);
 
 	double space = 1 / (double) lod;
-	double hDivider = 1200.0; // 8 / space; // maybe link to actual real size
+	double hDivider = 1200.0; // 8 / space; // maybe link to actual real
+				  // size
 	int k = 0;
 	Color3f groundColor = new Color3f(0.6f, 0.2f, 0.1f);
 	Color3f flashyColor = new Color3f(0.8f, 0.6f, 0.1f);
@@ -256,10 +249,10 @@ public class MapViewFrame extends JFrame
 	NormalGenerator ng = new NormalGenerator();
 	GeometryInfo geoInfo = new GeometryInfo(tsa);
 	ng.generateNormals(geoInfo);
-	
+
 	return geoInfo.getGeometryArray();
     }
-    
+
     private void addMap(Integer[][] map)
     {
 	GeometryArray mapGeom = createGeometryArray(map);
